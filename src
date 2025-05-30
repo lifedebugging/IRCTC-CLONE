@@ -1,1 +1,32 @@
+import requests
+class IRCTC:
 
+    def __init__(self):
+        user_input = input("How would you like to proceed?\n"
+            "1. Enter 1 to check live train status\n"
+            "2. Enter 2 to check PNR\n"
+            "3. Enter 3 to check train schedule\n")
+        
+        if user_input == 1:
+            print("live train status")
+        elif user_input == 2:
+            print("PNR")
+        else:
+            self.train_schedule()
+
+    def train_schedule(self):
+        train_no = input("Enter the train number: ")
+        self.fetch_data(train_no)
+
+    def fetch_data(self, train_no):
+        url = (
+            "https://indianrailapi.com/api/v2/TrainSchedule/apikey/1bb272a283c551b1f3"
+            "ff52c76bd3c882/TrainNumber/" + train_no
+        )
+        response = requests.get(url)
+        data = response.json()
+        print(data['Route'])
+        for i in data['Route']:
+            print(i['StationName'], "|", i["ArrivalTime"], "|", i["DepartureTime"])
+
+obj = IRCTC()
